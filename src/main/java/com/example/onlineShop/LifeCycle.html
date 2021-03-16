@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="text/babel">
+    class Parent extends React.Component {
+        constructor() {
+            super();
+            this.state = {
+                isShown: false,
+                num: 10
+            }
+            console.log("Parent component constructor is called");
+        }
+
+        render() {
+            console.log("Parent component render is called");
+            const { isShown, num } = this.state;
+            return(
+                <div>
+                    <h2>Parent Component</h2>
+                    <button onClick={
+                        () => {
+                            this.setState(pre => {
+                                return {
+                                    isShown: !isShown
+                                }
+                            });
+                        }
+                    }>Show/Hide</button>
+                    <hr/>
+                    <button onClick={
+                        () => {
+                            this.setState(pre => {
+                                return {
+                                    num: num+10
+                                }
+                            });
+                        }
+                    }>Change num</button>
+                    {
+                        isShown ? <Child data={num}/> : null
+                    }
+                </div>
+            )
+        }
+
+        componentDidMount() {
+            console.log("Parent componentDidMount is called");
+        }
+
+        componentDidUpdate() {
+            console.log("Parent componentDidUpdate is called");
+        }
+    }
+
+    class Child extends React.Component {
+        constructor() {
+            super();
+            console.log("Child component constructor is called");
+        }
+
+        render() {
+            console.log("Child component render is called");
+            console.log("Child component props:", this.props);
+            const { num } = this.props;
+            return(
+                <div>
+                    <h3>Child Component</h3>
+                </div>
+            )
+        }
+
+        componentDidMount() {
+            console.log("Child componentDidMount is called");
+            const oH3 = document.getElementsByTagName("h3")[0];
+            console.log(oH3);
+        }
+
+        componentDidUpdate() {
+            console.log("Child componentDidUpdate is called");
+        }
+
+        componentWillUnmount() {
+            console.log("Child componentWillUnmount is called");
+        }
+    }
+
+    ReactDOM.render(
+        <Parent/>,
+        document.getElementById("app")
+    )
+</script>
+</body>
+</html>
+
